@@ -60,6 +60,7 @@ public:
 	void mouseClick(int event, int x, int y, int flags, void* param);
 	int nextIter();
 	int getIterCount() const { return m_iterCount; }
+	void writeMask(string filename);
 
 private:
 	void setRectInMask();
@@ -124,6 +125,7 @@ void BuildingDetector::showImage() const
 	{
 		getBinMask(m_mask, binMask);
 		m_image->copyTo(res, binMask);  //按照最低位是0还是1来复制，只保留跟前景有关的图像，比如说可能的前景，可能的背景
+		
 	}
 
 	vector<Point>::const_iterator it;
@@ -261,6 +263,7 @@ void BuildingDetector::mouseClick(int event, int x, int y, int flags, void*)
 /*该函数进行grabcut算法，并且返回算法运行迭代的次数*/
 int BuildingDetector::nextIter()
 {
+
 	if (m_isInitialized)
 		//使用grab算法进行一次迭代，参数2为m_mask，里面存的m_mask位是：矩形内部除掉那些可能是背景或者已经确定是背景后的所有的点，且m_mask同时也为输出
 		//保存的是分割后的前景图像
@@ -278,7 +281,31 @@ int BuildingDetector::nextIter()
 		}
 		else
 		{
-			grabCut(*m_image, m_mask, m_rect, m_bgdModel, m_fgdModel, 1, GC_INIT_WITH_RECT);
+			Rect rect;
+			int extent = 10;
+			rect.x = max(0, m_rect.x - extent);
+			rect.y = max(0, m_rect.y - extent);
+			rect.width = min(m_rect.width + extent * 2, m_image->cols - rect.x);
+			rect.height = min(m_rect.height + extent * 2, m_image->rows - rect.y);
+
+			Rect new_rect;
+			new_rect.x = m_rect.x - rect.x;
+			new_rect.y = m_rect.y - rect.y;
+			new_rect.width = m_rect.width;
+			new_rect.height = m_rect.height;
+
+			Mat img = (*m_image)(rect);
+			Mat mask = m_mask(rect);
+
+			grabCut(img, mask, new_rect, m_bgdModel, m_fgdModel, 1, GC_INIT_WITH_RECT);
+			m_mask(rect) = mask;
+
+			//grabCut(*m_image, m_mask, m_rect, m_bgdModel, m_fgdModel, 1, GC_INIT_WITH_RECT);
+			//Mat binMask;
+			//Mat res;
+			//getBinMask(mask, binMask);
+			//img.copyTo(res, binMask);  //按照最低位是0还是1来复制，只保留跟前景有关的图像，比如说可能的前景，可能的背景
+			//imshow("test2", res);
 		}
 		
 		m_isInitialized = true;
@@ -291,6 +318,14 @@ int BuildingDetector::nextIter()
 	return m_iterCount;
 }
 
+void BuildingDetector::writeMask(string filename)
+{
+	Mat binMask, res;
+	getBinMask(m_mask, binMask);
+	m_image->copyTo(res, binMask);  //按照最低位是0还是1来复制，只保留跟前景有关的图像，比如说可能的前景，可能的背景
+	imwrite(filename, binMask * 255);
+}
+
 BuildingDetector gcapp;
 void on_mouse(int event, int x, int y, int flags, void* param)
 {
@@ -299,7 +334,7 @@ void on_mouse(int event, int x, int y, int flags, void* param)
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	string filename = "../images/test.png";
+	string filename = "../images/7-48.tiff";
 	Mat img = imread(filename);
 	//if (img.empty())
 	//{
@@ -327,8 +362,8 @@ int _tmain(int argc, _TCHAR* argv[])
 			gcapp.reset();
 			gcapp.showImage();
 			break;
-		case 'b':
-
+		case 'w':
+			gcapp.writeMask( "a.png");
 			break;
 		case 'n':
 			int m_iterCount = gcapp.getIterCount();
