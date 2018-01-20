@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BuildingDetectorDemo", "BuildingDetectorDemo\BuildingDetectorDemo.vcxproj", "{E8F4C36A-CB8C-4D62-99BE-62D9556CEADB}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BuildingDetecor", "BuildingDetecor\BuildingDetecor.vcxproj", "{23218540-3BCA-4F8C-B1F0-22DFD7BD4DEB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E8F4C36A-CB8C-4D62-99BE-62D9556CEADB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E8F4C36A-CB8C-4D62-99BE-62D9556CEADB}.Debug|Win32.Build.0 = Debug|Win32
+		{E8F4C36A-CB8C-4D62-99BE-62D9556CEADB}.Release|Win32.ActiveCfg = Release|Win32
+		{E8F4C36A-CB8C-4D62-99BE-62D9556CEADB}.Release|Win32.Build.0 = Release|Win32
+		{23218540-3BCA-4F8C-B1F0-22DFD7BD4DEB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{23218540-3BCA-4F8C-B1F0-22DFD7BD4DEB}.Debug|Win32.Build.0 = Debug|Win32
+		{23218540-3BCA-4F8C-B1F0-22DFD7BD4DEB}.Release|Win32.ActiveCfg = Release|Win32
+		{23218540-3BCA-4F8C-B1F0-22DFD7BD4DEB}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
