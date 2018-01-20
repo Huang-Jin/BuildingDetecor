@@ -1,4 +1,4 @@
-﻿生成启动时间为 2018/1/20 12:23:50。
+﻿生成启动时间为 2018/1/20 16:27:19。
      1>项目“G:\Programming\C++\BuildingDetecor\BuildingDetectorDemo\BuildingDetectorDemo.vcxproj”在节点 2 上(Build 个目标)。
      1>ClCompile:
          G:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\BuildingDetectorDemo.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt BuildingDetectorDemo.cpp
@@ -11,4 +11,4 @@
 
 生成成功。
 
-已用时间 00:00:00.95
+已用时间 00:00:01.88
