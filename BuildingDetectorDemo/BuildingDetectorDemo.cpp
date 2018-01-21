@@ -326,28 +326,23 @@ void BuildingDetector::writeMask(string filename)
 	imwrite(filename, binMask * 255);
 }
 
-BuildingDetector gcapp;
+BuildingDetector bdDemo;
 void on_mouse(int event, int x, int y, int flags, void* param)
 {
-	gcapp.mouseClick(event, x, y, flags, param);
+	bdDemo.mouseClick(event, x, y, flags, param);
 }
 
 int _tmain(int argc, _TCHAR* argv[])
 {
 	string filename = "../images/7-48.tiff";
 	Mat img = imread(filename);
-	//if (img.empty())
-	//{
-	//	std::cout << "\n Error, couldn't read m_image with filename " << filename << endl;
-	//	return 1;
-	//}
 
 	const string m_winName = "image";
 	cvNamedWindow(m_winName.c_str(), CV_WINDOW_AUTOSIZE);
 	cvSetMouseCallback(m_winName.c_str(), on_mouse, 0);
 
-	gcapp.setImageAndWinName(img, m_winName);
-	gcapp.showImage();
+	bdDemo.setImageAndWinName(img, m_winName);
+	bdDemo.showImage();
 
 	for (;;)
 	{
@@ -359,19 +354,22 @@ int _tmain(int argc, _TCHAR* argv[])
 			goto exit_main;
 		case 'r':
 			cout << endl;
-			gcapp.reset();
-			gcapp.showImage();
+			bdDemo.reset();
+			bdDemo.showImage();
 			break;
 		case 'w':
-			gcapp.writeMask( "a.png");
+			bdDemo.writeMask( "a.png");
+			break;
+		case 'd':
+
 			break;
 		case 'n':
-			int m_iterCount = gcapp.getIterCount();
+			int m_iterCount = bdDemo.getIterCount();
 			cout << "<" << m_iterCount << "... ";
-			int newIterCount = gcapp.nextIter();
+			int newIterCount = bdDemo.nextIter();
 			if (newIterCount > m_iterCount)
 			{
-				gcapp.showImage();
+				bdDemo.showImage();
 				cout << m_iterCount << ">" << endl;
 			}
 			else
