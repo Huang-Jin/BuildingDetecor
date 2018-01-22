@@ -15,9 +15,12 @@ const Scalar BLUE = Scalar(255, 0, 0);
 const Scalar LIGHTBLUE = Scalar(255, 255, 160);
 const Scalar GREEN = Scalar(0, 255, 0);
 
-typedef cv::Mat(*BuildDet)(std::string, int, int, int, int);
+const int SHIFT_KEY = CV_EVENT_FLAG_SHIFTKEY; //Shift键
 
-class BuildingDetector
+typedef cv::Mat(*BuildDetRec)(std::string, int, int, int, int);
+typedef cv::Mat(*BuildDetPt)(std::string, int, int, int, int, std::vector<cv::Point>, std::vector<cv::Point>);
+
+class Demo
 {
 public:
 	enum{ NOT_SET = 0, IN_PROCESS = 1, SET = 2 };
@@ -27,38 +30,43 @@ public:
 	void reset();
 	void setImageAndWinName(const Mat& _image, const string& _winName);
 	void showImage() const;
+	void addPoints(Point p, bool isFgd);
 	void mouseClick(int event, int x, int y, int flags, void* param);
+	void clearPts();
 
 	Rect getRect() { return m_rect; }
 	Mat  getMask() { return m_mask; }
 	void setMask(Mat mask) { m_mask = mask; }
+	vector<cv::Point> getFgdPts() { return m_fgdPxls; }
+	vector<cv::Point> getBgdPts() { return m_bgdPxls; }
 
 private:
 	const string* m_winName;
 	const Mat* m_image;
 	Mat m_mask;
-	Mat m_bgdModel, m_fgdModel;
-	Mat m_preMask, m_preImage;
 
-	uchar m_rectState, m_lblsState, m_prLblsState;
+	uchar m_rectState, m_lbState, m_rbState;
 	bool m_isInitialized;
 
 	Rect m_rect;
-	vector<Point> m_fgdPxls, m_bgdPxls, m_prFgdPxls, m_prBgdPxls;
+	vector<Point> m_fgdPxls, m_bgdPxls;
 };
 
-/*给类的变量赋值*/
-void BuildingDetector::reset()
+void Demo::reset()
 {
 	m_rectState = NOT_SET;
+	m_lbState = NOT_SET;
+	m_rbState = NOT_SET;
+	
 	if (!m_mask.empty())
 	{
 		m_mask.release();
 	}
+
+	m_bgdPxls.clear(); m_fgdPxls.clear();
 }
 
-/*给类的成员变量赋值*/
-void BuildingDetector::setImageAndWinName(const Mat& _image, const string& _winName)
+void Demo::setImageAndWinName(const Mat& _image, const string& _winName)
 {
 	if (_image.empty() || _winName.empty())
 		return;
@@ -67,8 +75,7 @@ void BuildingDetector::setImageAndWinName(const Mat& _image, const string& _winN
 	reset();
 }
 
-/*显示4个点，一个矩形和图像内容，因为后面的步骤很多地方都要用到这个函数，所以单独拿出来*/
-void BuildingDetector::showImage() const
+void Demo::showImage() const
 {
 	if (m_image->empty() || m_winName->empty())
 		return;
@@ -82,6 +89,12 @@ void BuildingDetector::showImage() const
 	{
 		res = m_image->clone();
 	}
+
+	vector<Point>::const_iterator it;
+	for (it = m_bgdPxls.begin(); it != m_bgdPxls.end(); ++it)
+		circle(res, *it, m_radius, BLUE, m_thickness);
+	for (it = m_fgdPxls.begin(); it != m_fgdPxls.end(); ++it)
+		circle(res, *it, m_radius, RED, m_thickness);
 	
 	/*画矩形*/
 	if (m_rectState == IN_PROCESS || m_rectState == SET)
@@ -90,15 +103,39 @@ void BuildingDetector::showImage() const
 	imshow(*m_winName, res);
 }
 
+void Demo::addPoints(Point p, bool isFgd)
+{
+	vector<Point> *pxls;
+	uchar value;
+	if (isFgd) 
+	{
+		pxls = &m_fgdPxls;
+		value = GC_FGD;    //1
+	}
+	else 
+	{
+		pxls = &m_bgdPxls;
+		value = GC_BGD;    //1
+	}
+
+	pxls->push_back(p);
+}
+
 /*鼠标响应函数，参数flags为CV_EVENT_FLAG的组合*/
-void BuildingDetector::mouseClick(int event, int x, int y, int flags, void*)
+void Demo::mouseClick(int event, int x, int y, int flags, void*)
 {
 	switch (event)
 	{
-	case CV_EVENT_LBUTTONDOWN: // set m_rect or GC_BGD(GC_FGD) labels
+	case CV_EVENT_LBUTTONDOWN:
 	{
-		m_rectState = IN_PROCESS; //表示正在画矩形
-		m_rect = Rect(x, y, 1, 1);
+		bool isShift = (flags & SHIFT_KEY) != 0;
+		if (m_rectState == NOT_SET && !isShift)
+		{
+			m_rectState = IN_PROCESS; //表示正在画矩形
+			m_rect = Rect(x, y, 1, 1);
+		}
+		if (isShift && m_rectState == SET) //按下了shift键，且画好了矩形，表示正在画前景点
+			m_lbState = IN_PROCESS;
 	}
 		break;
 	case CV_EVENT_LBUTTONUP:
@@ -106,7 +143,27 @@ void BuildingDetector::mouseClick(int event, int x, int y, int flags, void*)
 		{
 			m_rect = Rect(Point(m_rect.x, m_rect.y), Point(x, y));   //矩形结束
 			m_rectState = SET;
-			assert(m_bgdPxls.empty() && m_fgdPxls.empty() && m_prBgdPxls.empty() && m_prFgdPxls.empty());
+			showImage();
+		}
+		if (m_lbState == IN_PROCESS)
+		{
+			addPoints(Point(x, y), true);  
+			m_lbState = SET;
+			showImage();
+		}
+		break;
+	case CV_EVENT_RBUTTONDOWN:
+	{
+		bool isShift = (flags & SHIFT_KEY) != 0;
+		if (isShift && m_rectState == SET)	//按下了shift键，且画好了矩形，表示正在画背景点
+			m_rbState = IN_PROCESS;
+	}
+		break;
+	case CV_EVENT_RBUTTONUP:
+		if (m_rbState == IN_PROCESS) 
+		{
+			addPoints(Point(x, y), false);    //画出背景点
+			m_rbState = SET;
 			showImage();
 		}
 		break;
@@ -114,18 +171,34 @@ void BuildingDetector::mouseClick(int event, int x, int y, int flags, void*)
 		if (m_rectState == IN_PROCESS)
 		{
 			m_rect = Rect(Point(m_rect.x, m_rect.y), Point(x, y));
-			assert(m_bgdPxls.empty() && m_fgdPxls.empty() && m_prBgdPxls.empty() && m_prFgdPxls.empty());
 			showImage();    //不断的显示图片
+		}
+		else if (m_lbState == IN_PROCESS)
+		{
+			addPoints(Point(x, y), true);
+			showImage();
+		}
+		else if (m_rbState == IN_PROCESS)
+		{
+			addPoints(Point(x, y), false);
+			showImage();
 		}
 		break;
 	}
 }
 
-BuildingDetector bdDemo;
+void Demo::clearPts()
+{
+	m_fgdPxls.clear();
+	m_bgdPxls.clear();
+}
+
+Demo bdDemo;
 void on_mouse(int event, int x, int y, int flags, void* param)
 {
 	bdDemo.mouseClick(event, x, y, flags, param);
 }
+
 
 void writeMask(string filename, Mat binMask)
 {
@@ -136,7 +209,7 @@ void writeMask(string filename, Mat binMask)
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	BuildDet build_detector;
+	BuildDetPt build_detector;
 	HINSTANCE hdll;
 	hdll = LoadLibraryA("BuildingDetecor.dll");
 	if (hdll == NULL)
@@ -145,14 +218,14 @@ int _tmain(int argc, _TCHAR* argv[])
 		return -1;
 	}
 
-	build_detector = (BuildDet)GetProcAddress(hdll, "building_detector");
+	build_detector = (BuildDetPt)GetProcAddress(hdll, "building_detector_pt");
 	if (build_detector == NULL)
 	{
 		FreeLibrary(hdll);
 		return -1;
 	}
 
-	string filename = "../images/7-48.tiff";
+	string filename = "../images/9-65.tiff";
 	Mat img = imread(filename);
 
 	const string m_winName = "image";
@@ -181,7 +254,8 @@ int _tmain(int argc, _TCHAR* argv[])
 			break;
 		case 'd':
 			Rect rect = bdDemo.getRect();
-			bdDemo.setMask(build_detector(filename, rect.x, rect.y, rect.width, rect.height));
+			bdDemo.setMask(build_detector(filename, rect.x, rect.y, rect.width, rect.height, bdDemo.getFgdPts(), bdDemo.getBgdPts()));
+			bdDemo.clearPts();
 			bdDemo.showImage();
 			break;
 		}
