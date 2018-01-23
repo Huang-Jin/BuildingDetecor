@@ -1,7 +1,7 @@
-﻿生成启动时间为 2018/1/22 15:11:20。
+﻿生成启动时间为 2018/1/23 14:28:55。
      1>项目“G:\Programming\C++\BuildingDetecor\BuildingDetectorDemo\BuildingDetectorDemo.vcxproj”在节点 2 上(Build 个目标)。
      1>ClCompile:
-         G:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Release\BuildingDetectorDemo.pch" /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt demo.cpp
+         G:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Release\BuildingDetectorDemo.pch" /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt demo.cpp
          demo.cpp
        Link:
          G:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"G:\Programming\C++\BuildingDetecor\Release\BuildingDetectorDemo.exe" /INCREMENTAL:NO /NOLOGO opencv_imgproc2413.lib opencv_highgui2413.lib opencv_core2413.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"G:\Programming\C++\BuildingDetecor\Release\BuildingDetectorDemo.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"G:\Programming\C++\BuildingDetecor\Release\BuildingDetectorDemo.lib" /MACHINE:X86 /SAFESEH Release\demo.obj
@@ -13,4 +13,4 @@
 
 生成成功。
 
-已用时间 00:00:01.60
+已用时间 00:00:01.64

@@ -1,7 +1,9 @@
-﻿生成启动时间为 2018/1/22 15:11:25。
-     1>项目“G:\Programming\C++\BuildingDetecor\BuildingDetecor\BuildingDetecor.vcxproj”在节点 2 上(Build 个目标)。
+﻿生成启动时间为 2018/1/23 14:23:35。
+     1>项目“G:\Programming\C++\BuildingDetecor\BuildingDetecor\BuildingDetecor.vcxproj”在节点 3 上(Build 个目标)。
      1>ClCompile:
-         G:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _WINDOWS /D _USRDLL /D BUILDINGDETECOR_EXPORTS /D _WINDLL /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Release\BuildingDetecor.pch" /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt BuildingDetecor.cpp
+         G:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _WINDOWS /D _USRDLL /D BUILDINGDETECOR_EXPORTS /D _WINDLL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yc"stdafx.h" /Fp"Release\BuildingDetecor.pch" /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt stdafx.cpp
+         stdafx.cpp
+         G:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _WINDOWS /D _USRDLL /D BUILDINGDETECOR_EXPORTS /D _WINDLL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Release\BuildingDetecor.pch" /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt BuildingDetecor.cpp
          BuildingDetecor.cpp
      1>g:\programming\c++\buildingdetecor\buildingdetecor\BuildingDetector.h(6): warning C4190: “building_detector_rect”有指定的 C 链接，但返回了与 C 不兼容的 UDT“cv::Mat”
                  G:\Programming\C++\BuildingDetecor\3rdparty\opencv-2.4.13\include\opencv2/core/core.hpp(1709) : 参见“cv::Mat”的声明
@@ -12,6 +14,8 @@
      1>g:\programming\c++\buildingdetecor\buildingdetecor\BuildingDetector.h(14): warning C4190: “BuildDetPt”有指定的 C 链接，但返回了与 C 不兼容的 UDT“cv::Mat”
                  G:\Programming\C++\BuildingDetecor\3rdparty\opencv-2.4.13\include\opencv2/core/core.hpp(1709) : 参见“cv::Mat”的声明
      1>BuildingDetecor.cpp(80): warning C4018: “<”: 有符号/无符号不匹配
+         G:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _WINDOWS /D _USRDLL /D BUILDINGDETECOR_EXPORTS /D _WINDLL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt dllmain.cpp
+         dllmain.cpp
        Link:
          G:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"G:\Programming\C++\BuildingDetecor\Release\BuildingDetecor.dll" /INCREMENTAL:NO /NOLOGO opencv_imgproc2413.lib opencv_highgui2413.lib opencv_core2413.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"G:\Programming\C++\BuildingDetecor\Release\BuildingDetecor.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"G:\Programming\C++\BuildingDetecor\Release\BuildingDetecor.lib" /MACHINE:X86 /SAFESEH /DLL Release\BuildingDetecor.obj
          Release\dllmain.obj
@@ -24,4 +28,4 @@
 
 生成成功。
 
-已用时间 00:00:01.23
+已用时间 00:00:03.60

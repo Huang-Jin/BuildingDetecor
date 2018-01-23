@@ -209,6 +209,13 @@ void writeMask(string filename, Mat binMask)
 
 int _tmain(int argc, _TCHAR* argv[])
 {
+	if (argc != 2)
+	{
+		printf("Please input the image filename as parameter\r\n");
+		return -1;
+	}
+	
+
 	BuildDetPt build_detector;
 	HINSTANCE hdll;
 	hdll = LoadLibraryA("BuildingDetecor.dll");
@@ -225,7 +232,8 @@ int _tmain(int argc, _TCHAR* argv[])
 		return -1;
 	}
 
-	string filename = "../images/9-65.tiff";
+	string filename(argv[1]);
+	// "../images/9-65.tiff";
 	Mat img = imread(filename);
 
 	const string m_winName = "image";
