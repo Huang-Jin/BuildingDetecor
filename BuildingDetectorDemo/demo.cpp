@@ -212,6 +212,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	if (argc != 2)
 	{
 		printf("Please input the image filename as parameter\r\n");
+		system("pause");
 		return -1;
 	}
 	
@@ -222,6 +223,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	if (hdll == NULL)
 	{
 		FreeLibrary(hdll);
+		printf("Could not find \"BuildingDetecor.dll\"\r\n");
+		system("pause");
 		return -1;
 	}
 
@@ -229,6 +232,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	if (build_detector == NULL)
 	{
 		FreeLibrary(hdll);
+		printf("Could not find function \"building_detector_pt\" in \" BuildingDetecor.dll\"\r\n");
+		system("pause");
 		return -1;
 	}
 
